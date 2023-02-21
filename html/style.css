@@ -1,0 +1,163 @@
+body{
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+nav{
+    background-color: aliceblue;
+    height: 130px;
+
+}
+.navbar > #name
+{
+    display: inline;
+
+}
+.navbar ul
+{
+    display: inline;
+    font-size: 18px;
+}
+.services
+{
+    display: flex;
+    float: right;
+    padding: 0;
+    position: relative;
+    left:150px;
+}
+.services li
+{
+    display: inline-block;
+    padding: 10px;
+}
+.login
+{
+    float: right;
+    padding: 0%;
+}
+.login li
+{
+    display: inline-block;
+    border:2px solid black;
+    border-radius: 10px;
+    background-color: cornflowerblue;
+    color: aliceblue;
+    
+}
+#name
+{
+    position: relative;
+    top: 20px;
+    font-size: 40px;
+}
+#name span{
+    color:blue;
+}
+.main
+{
+    width: 100%;
+    height: 500px;
+    position: relative;
+    background-color: rgb(109, 183, 248);
+    background-size:contain;
+}
+.apply
+{
+    position: absolute;
+    top: 150px;
+    left: 800px;
+}
+#mtext,#imagetext
+{
+    color:#00437e;
+}
+#imagetext
+{
+    font-size: 35px;
+}
+button
+{
+    border-radius: 20px;
+    width: 100px;
+    font-size: 15px;
+    height: 40px;
+    background-color:rgb(44, 44, 192);
+}
+button:hover{
+    cursor: pointer;
+}
+.box
+{
+    width:110px;
+    height: 100px;
+    display: inline-block;
+    position: relative;
+    border:1px solid burlywood;
+    border-radius: 10px;
+    text-align: center;
+    padding: 10px;
+    top: 90%;
+    left: 40%;
+    background-color: aliceblue;
+}
+.offers
+{
+    height: 200px;
+    width:100%;
+    font-size: 20px;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    position: relative;
+    top: 60px;
+}
+#left, #right, #mid{
+    color:rgb(0, 102, 255);
+    text-align: center;
+    font-weight: bold;
+}
+.des{
+    color:gray;
+    font-size: 13px;
+}
+.miniform
+{
+    background-color: rgb(15, 15, 54);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    height: 150px;
+}
+#head{
+    font-size: 25px;
+}
+.miniform form{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+.miniform form div{
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    height: 45px;
+    padding: 20px;
+}
+.miniform form div input{
+    background-color: transparent;
+    border:none;
+    border-bottom: 1px white solid;
+    color: white;
+    font-size: 20px;
+    padding: 10px 0;
+    outline: none;
+}
+input[type=number]::-webkit-inner-spin-button{
+    -webkit-appearance: none;
+}
+#move{
+    position: relative;
+    left: 90px;
+    bottom: 40px;
+}
+#increase_size{
+    font-size: 40px;
+    position: relative;
+    bottom: 40px;
+}
