@@ -32,13 +32,13 @@ nav{
 .login
 {
     float: right;
-    padding: 0%;
+
 }
 .login li
 {
     display: inline-block;
     border:2px solid black;
-    border-radius: 10px;
+    border-radius: 8px;
     background-color: cornflowerblue;
     color: aliceblue;
     
