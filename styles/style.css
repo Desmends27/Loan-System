@@ -34,6 +34,11 @@ nav{
     float: right;
 
 }
+a:any-link
+{
+    color: aliceblue;
+    text-decoration: none;
+}
 .login li
 {
     display: inline-block;
