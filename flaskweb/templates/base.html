@@ -12,17 +12,17 @@
 {% if messages %}
 {% for category, message in messages %}
 {% if category=='error' %}
-<div class="alert alert-danger alter-dismissable fade show" role="alert">
+<div class="error_message">
   {{ message }}
-  <button type="close" class="close" data-dismiss="alert">
-    <span aria-hidden="true">&times;</span>
+  <button id="error" onclick="close()">
+    <span>&times;</span>
   </button>
 </div>
 {% else %}
-<div class="alert alert-danger alter-dismissable fade show" role="alert">
+<div class="success_message">
   {{ message }}
-  <button type="close" class="close" data-dismiss="alert">
-    <span aria-hidden="true">&times;</span>
+  <button id="success" onclick="close()">
+    <span>&times;</span>
   </button>
 </div>
 {% endif %}
@@ -31,5 +31,16 @@
 {% endwith %}
 
     {% block body %}{% endblock %}
+    <script>
+      const button1 = document.getElementById("success");
+      button1.addEventListener("click", ()=>{
+        document.getElementsByClassName("success_message")[0].style.display = 'none';
+      })
+
+      const button2 = document.getElementById("error");
+      button2.addEventListener("click", ()=>{
+        document.getElementsByClassName("error_message")[0].style.display = 'none';
+      })
+    </script>
 </body>
 </html>
