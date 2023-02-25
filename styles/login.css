@@ -97,3 +97,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;      
 }
+select option
+{
+  color: #000;
+  padding: 0 10px;
+  font-size: medium;
+}
