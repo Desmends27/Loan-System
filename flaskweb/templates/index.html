@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block head %}Home{% endblock %}
+
+{% block body %}
+    <nav class="navbar">
+        {{text}}
+        <h2 id="name"><span>Match</span>Financial</h2>
+        <ul class="login">
+            <li><a href="signup">Sign Up</a>&nbsp;</li>
+            {% if user.is_authenticated %}
+            <li><a href="logout">Logout</a></li>
+            {% else %}
+            <li><a href="login">Login</a></li>
+            {% endif %}
+        </ul>
+        <br>
+        <ul class="services">
+            <li>Personal Loans</li>
+            <li>Business Loans</li>
+            <li>Student Loans</li>
+            <li>Debt Consolidation</li>
+        </ul>
+    </nav>
+    <div class="main">
+        <div class="apply">
+            <h3 id="imagetext">Personal Loans</h3>
+            <p id="mtext">Find what fits you best</p>
+            <button type="button" id="img_button">Apply Now</button>
+        </div>
+        <div class="box">Personal Loans</div>
+        <div class="box">Business Loans</div>
+        <div class="box">Student Loans</div>
+        <div class="box">Debt Consolidation</div>
+    </div>
+    <div class="offers">
+        <div id="left">
+            <p>Loans up to 100k as soon as next day</p>
+            <p class="des">No impact on your credit score</p>
+        </div>
+        <div id="mid">
+            <p>Get Personal Loan Offers </p>
+            <p class="des">No impact on your credit score</p>
+        </div>
+        <div id="right">
+            <p>Low rates starting at 3.84% APR</p>
+            <p class="des">No impact on your credit score</p>
+        </div>
+    </div>
+    <div class="miniform">
+        <div id="head">How much would you like to borrow?</div>
+        <form action="#" method="#">
+            <div>
+                <label for="loan_term">Loan Amount</label>
+                <input type="number" class="line" name="loan_amount"></div>
+            <div>
+                <label for="loan_term">Loan Time</label>
+                <input type="number" class="line" name="loan_term"></div>
+            <div>
+                <label for="interest_rate">Interest Rates</label>
+                <input type="number" class="line" name="interest_rate"></div>
+            <div>
+                <label for="amount" id="increase_size">$456/mo</label>
+                <button id="move" type="submit">Apply Now</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
