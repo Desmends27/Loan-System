@@ -7,4 +7,4 @@ When done will change database to mysql
 Contains html pages
 
 ## static
-Contains css sheets
+Contains css sheets and images
