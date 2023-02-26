@@ -3,6 +3,12 @@
     padding: 0;
     margin: 0;
 }
+a
+{
+    text-decoration: none;
+    color: blue;
+    pointer-events: all;
+}
 body{
     font-family:Verdana, Geneva, Tahoma, sans-serif;
     background-color: #00437e;
@@ -177,4 +183,8 @@ input[type=number]::-webkit-inner-spin-button{
     font-size: 40px;
     position: relative;
     bottom: 40px;
+}
+.center h1{
+    margin: 15px;
+    text-align: center
 }
