@@ -7,26 +7,30 @@
         {{text}}
         <h2 id="name"><span>Match</span>Financial</h2>
         <ul class="login">
-            <li><a href="signup">Sign Up</a>&nbsp;</li>
             {% if user.is_authenticated %}
+            <li><a href="account">Account</a>&nbsp;</li>
             <li><a href="logout">Logout</a></li>
+            <li class="user_image">
+                <img src="../images/windows-WJPHTJEtgzw-unsplash (1).jpg">
+            </li>
             {% else %}
+            <li><a href="signup">Sign Up</a>&nbsp;</li>
             <li><a href="login">Login</a></li>
             {% endif %}
         </ul>
         <br>
         <ul class="services">
-<<<<<<< HEAD:flaskweb/templates/index.html
-            <li>Personal Loans</li>
-            <li>Business Loans</li>
-            <li>Student Loans</li>
-            <li>Debt Consolidation</li>
-=======
-            <li><a href=personal-loans.html>Personal Loans</a></li>
-            <li><a href=bussiness-loans.html>Business Loans</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="#">Personal Loans</a></li>
+            <li><a href="#">Business Loans</a></li>
             <li><a href="#">Student Loans</a></li>
             <li><a href="#">Debt Consolidation</a></li>
->>>>>>> main:html/index.html
+            {% else %}
+            <li><a href="/">Personal Loans</a></li>
+            <li><a href="/">Business Loans</a></li>
+            <li><a href="/">Student Loans</a></li>
+            <li><a href="/">Debt Consolidation</a></li>
+            {% endif %}
         </ul>
     </nav>
     <div class="main">
