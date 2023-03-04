@@ -26,7 +26,7 @@
         <ul class="services">
             <li><a href=personal-loans.html>Personal Loans</a></li>
             <li><a href=bussiness-loans.html>Business Loans</a></li>
-            <li><a href="debt-consolidation.html">Student Loans</a></li>
+            <li><a href="#=de">Student Loans</a></li>
             <li><a href="#">Debt</a></li>
         </ul>
     </nav>
@@ -36,12 +36,9 @@
             <p id="mtext">Find what fits you best</p>
             <button type="button" id="img_button">Apply Now</button>
         </div>
-        <div>
-            <ul>
-                <li class="box">Personal Loans</li>
-                <li class="box">Business Loans</li>
-                <li class="box">Debt</li>
-            </ul>
+        <p id="loanOwned">Loan Owned</p>
+        <div class="box progress-bar">
+            <div class="progress"></div>              
         </div>
 
     </div>
@@ -63,19 +60,37 @@
         <div id="head">How much would you like to borrow?</div>
         <form action="#" method="#">
             <div>
-                <label for="loan_term">Loan Amount</label>
-                <input type="number" class="line" name="loan_amount"></div>
-            <div>
-                <label for="loan_term">Loan Term</label>
-                <input type="number" class="line" name="loan_term"></div>
-            <div>
-                <label for="interest_rate">Interest Rates</label>
-                <input type="number" class="line" name="interest_rate"></div>
-            <div>
-                <label for="amount" id="increase_size">$456/mo</label>
-                <button id="move" type="submit">Apply Now</button>
+              <label for="principal">Loan Amount</label>
+              <input type="number" class="line" name="principal">
             </div>
-        </form>
+            <div>
+              <label for="time">Loan Term</label>
+              <input type="number" class="line" name="time">
+            </div>
+            <div>
+              <label for="interest_rate">Interest Rate</label>
+              <input type="number" class="line" name="interest_rate" name="interest_rate" value="3.4">
+            </div>
+            <div class="move-bottom">
+              <label for="amount" id="increase_size">0</label>
+              <button id="move" type="button" onclick="calculateAmount()">Calculate interest</button>
+            </div>
+          </form>
+          <script src="../script.js">
+          </script>
     </div>
+    <footer class="social-media-footer">
+        <div class="container">
+          <ul class="social-media-list">
+            <li><a href="#"><img src="facebook.png" alt="Facebook"></a></li>
+            <li><a href="#"><img src="twitter.png" alt="Twitter"></a></li>
+            <li><a href="#"><img src="instagram.png" alt="Instagram"></a></li>
+            <li><a href="#"><img src="linkedin.png" alt="LinkedIn"></a></li>
+            <li><a href="#"><img src="youtube.png" alt="YouTube"></a></li>
+          </ul>
+        </div>
+      </footer>      
 </body>
+<script src="../script.js">
+</script>
 </html>

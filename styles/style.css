@@ -107,6 +107,18 @@ button
 button:hover{
     cursor: pointer;
 }
+#loanOwned
+{
+    display: inline-flex;
+    position: relative;
+    border-radius: 10px;
+    text-align: center;
+    padding: 10px;
+    top: 420px;
+    left: 40%;
+    bottom: 10px;
+    background-color: aliceblue;
+}
 .box
 {
     width:110px;
@@ -117,7 +129,7 @@ button:hover{
     border-radius: 10px;
     text-align: center;
     padding: 10px;
-    top: 400px;
+    top: 420px;
     left: 40%;
     bottom: 10px;
     background-color: aliceblue;
@@ -143,6 +155,7 @@ button:hover{
 }
 .miniform
 {
+    display: flex;
     background-color: rgb(15, 15, 54);
     color: white;
     text-align: center;
@@ -171,18 +184,20 @@ button:hover{
     padding: 10px 0;
     outline: none;
 }
+
 input[type=number]::-webkit-inner-spin-button{
     -webkit-appearance: none;
 }
 #move{
     position: relative;
-    left: 90px;
-    bottom: 40px;
+    left: 10px;
+    bottom: 20px;
 }
 #increase_size{
-    font-size: 40px;
+    font-size: 24px;
     position: relative;
     bottom: 40px;
+    width: 70px;
 }
 .center h1{
     margin: 15px;
@@ -192,3 +207,38 @@ input[type=number]::-webkit-inner-spin-button{
 #bank-account-fields {
   display: none;
 }
+
+.progress-bar {
+    width: 40%;
+    height: 20px;
+    background-color: #ddd;
+    border-radius: 10px;
+  }
+  
+  .progress {
+    width: 500%;
+    height: 100%;
+    background-color: #007bff;
+    border-radius: 10px;
+    transition: width 0.5s ease-in-out;
+  }
+  .move-bottom
+  {
+    position: relative;
+    top: 20px;
+  }
+
+  .social-media-footer {
+    background-color: #f9f9f9;
+    padding: 20px 0;
+  }
+  
+  .social-media-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: right;
+  }
+  
+  
