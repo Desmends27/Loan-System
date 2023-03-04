@@ -71,7 +71,7 @@ nav{
     top: 20px;
     font-size: 40px;
 }
-#name span{
+span{
     color:blue;
 }
 .main
@@ -187,4 +187,8 @@ input[type=number]::-webkit-inner-spin-button{
 .center h1{
     margin: 15px;
     text-align: center
+}
+#mobile-money-fields,
+#bank-account-fields {
+  display: none;
 }
