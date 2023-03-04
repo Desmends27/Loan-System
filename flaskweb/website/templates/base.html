@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    {% block links %}<link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">{% endblock %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css')}}">
     <title>{% block head %}{% endblock %}</title>
 </head>
 <body>

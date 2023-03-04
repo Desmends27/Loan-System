@@ -5,33 +5,42 @@
 {% block body %}
     <nav class="navbar">
         {{text}}
-        <h2 id="name"><span>Match</span>Financial</h2>
-        <ul class="login">
+        <div><h2 id="title"><span>Match</span>Financial</h2></div>
+        <div>
             {% if user.is_authenticated %}
-            <li><a href="account">Account</a>&nbsp;</li>
-            <li><a href="logout">Logout</a></li>
-            <li class="user_image">
-                <img src="../images/windows-WJPHTJEtgzw-unsplash (1).jpg">
-            </li>
+            <ul class="login">
+            {% if user.is_admin %}
+            <li><a href="admin">Admin</a>&nbsp;</li>
             {% else %}
+            <li><a href="account">Account</a>&nbsp;</li>
+            {% endif %}
+            <li><a href="logout">Logout</a></li>
+            <li id="user_image">
+                <img src="{{url_for('static', filename='pic.png')}}">
+            </li>
+            </ul>
+            {% else %}
+        <ul class="login" style="padding:15px">
             <li><a href="signup">Sign Up</a>&nbsp;</li>
             <li><a href="login">Login</a></li>
-            {% endif %}
         </ul>
-        <br>
+            {% endif %}
+        </div>
+        <div class="grid3">
         <ul class="services">
             {% if user.is_authenticated %}
-            <li><a href="#">Personal Loans</a></li>
-            <li><a href="#">Business Loans</a></li>
-            <li><a href="#">Student Loans</a></li>
-            <li><a href="#">Debt Consolidation</a></li>
+            <li><a href="personal_loans">Personal Loans</a></li>
+            <li><a href="business_loans">Business Loans</a></li>
+            <li><a href="student_loans">Student Loans</a></li>
+            <li><a href="debt_consolidation">Debt Consolidation</a></li>
             {% else %}
-            <li><a href="/">Personal Loans</a></li>
-            <li><a href="/">Business Loans</a></li>
-            <li><a href="/">Student Loans</a></li>
-            <li><a href="/">Debt Consolidation</a></li>
+            <li><a href="login">Personal Loans</a></li>
+            <li><a href="login">Business Loans</a></li>
+            <li><a href="login">Student Loans</a></li>
+            <li><a href="login">Debt Consolidation</a></li>
             {% endif %}
         </ul>
+        </div>
     </nav>
     <div class="main">
         <div class="apply">
@@ -39,8 +48,8 @@
             <p id="mtext">Find what fits you best</p>
             <button type="button" id="img_button">Apply Now</button>
         </div>
-        <div class="box">Personal Loans</div>
-        <div class="box">Business Loans</div>
+        <div class="box"><a href="pay_loan">Pay Loans</a></div>
+        <div class="box"><a href="pay_loan">My Loans</a></div>
         <div class="box">Student Loans</div>
         <div class="box">Debt Consolidation</div>
     </div>

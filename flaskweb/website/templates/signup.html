@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block head %}Signup{% endblock %}
+
+{% block body %}
+
+    <div class="login-page">
+      <h2 id="name"><span>Match</span>Financial</h2>
+        <div class="form">
+          <form class="login-form" method="POST">
+            <input type="text" placeholder="First Name" id="fname" name="fname" required/>
+            <input type="text" placeholder="Middle Name" id="mname" name="mname" required/>
+            <input type="text" placeholder="Last Name" id="lname" name="lname" required/>
+            <input type="text" placeholder="Address" id="address" name="address" required/>
+            <input type="text" placeholder="City" id="city" name="city" required>
+            <input type="text" placeholder="State" id="state" name="state" required>
+            <input type="text" placeholder="Phone Number" pattern="[0-9]{10}" id="phone" name="phone" required>
+            <input type="email" placeholder="Email Address" id="email" name="email" required/>
+            <input type="date" placeholder="Date of Birth" id="dob" name="dob" required>
+            <input type="text" placeholder="Valid ID Number" id="IDno" name="IDno" required>
+            <input type="password" placeholder="Enter Password" id="password" name="password" required>
+            <input type="password" placeholder="Confirm Password" id="password1" name="password1" required>
+            <label for="account_type">Select the account type</label>
+            <select name="account_type" id="drop_down">
+                <option value="Checking">Checking</option>
+                <option value="Regular_Savings">Regular Savings</option>
+                <option value="Fixed_deposit">Fixed Deposit</option>
+            </select>
+            <button type="submit">create</button>
+            <p class="message">Already registered? <a href="login">Sign In</a></p>
+          </form>
+
+        </div>
+      </div>
+{% endblock %}

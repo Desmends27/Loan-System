@@ -1,40 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles/style.css">
-    <link rel="stylesheet" href="../styles/dashboard.css">
-    <link rel="stylesheet" href="../styles/login.css">
-    <title>Personal Loan Form</title>
-</head>
-<body>
-    <nav class="ndash">
-        <h2 id="name"><span>Match</span>Financial</h2>
-        <div class="ndash">
-            <ul>
-                <li class="user-image">
-                    <img src="../images/windows-WJPHTJEtgzw-unsplash (1).jpg">
-                </li>
-                <li><a href="dashboard.html">Home</a></li>
-                <li><a href="#">Account</a></li>
-                <li><a href="#">Log out</a></li>
-            </ul>
-        </div>
-        <br>
-        <ul class="services">
-            <li><a href=personal-loans.html>Personal Loans</a></li>
-            <li><a href=bussiness-loans.html>Business Loans</a></li>
-            <li><a href="#">Student Loans</a></li>
-            <li><a href="#">Debt Consolidation</a></li>
-        </ul>
-    </nav>
- 
+{% extends 'base.html' %}
+
+{% block head %}Business Loans{% endblock %}
+
+{% block body %}
     <div class="center">
         <h1>Business Loan Application Form</h1>
         <div class="form" id="wide">
-            <form>
+            {% if user.loans %}
+            <div class="sorry">
+                <h1>Sorry, you have to repay your previous loans</h1>
+                <h2>Amount Left: {{userloan}}</h2>
+            </div>
+            {% else %}
+            <form method="POST">
                 <div class="form-group">
                     <label for="businessname">Business Name:</label>
                     <input type="text" id="businessname" name="businessname" required>
@@ -73,7 +51,7 @@
                 </div>
                 <div class="form-group">
                     <label for="loanamount">Loan Amount (in Ghana Cedis):</label>
-                    <input type="number" id="loanamount" name="loanamount" min="10000" step="10000" required>
+                    <input type="number" id="loanamount" name="loanamount" min="2000" step="1000" required>
                 </div>
                 <div class="form-group">
                     <label for="collateral">Collateral:</label>
@@ -87,8 +65,7 @@
                     <button type="submit">Submit Application</button>
                 </div>
             </form>
+            {% endif %}
         </div>
     </div>
-       
-</body>
-</html>
+{% endblock %}

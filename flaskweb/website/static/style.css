@@ -3,52 +3,89 @@
     padding: 0;
     margin: 0;
 }
-a
-{
-    text-decoration: none;
-    color: blue;
-    pointer-events: all;
-}
 body{
     font-family:Verdana, Geneva, Tahoma, sans-serif;
     background-color: #00437e;
 }
 nav{
     background-color: aliceblue;
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
     height: 130px;
-
 }
 .navbar > #name
 {
     display: inline;
-
+}
+.navbar #title{
+    padding:10px;
+    position:absolute;
+    font-size: 40px;
+}
+#title span{
+color:blue;
 }
 .navbar ul
 {
     display: inline;
     font-size: 18px;
 }
+.error_message, .success_message{
+    position:absolute;
+    width:100vw;
+    z-index: 2;
+    padding: 5px;
+}
+.error_message button, .success_message button{
+    font-size: 30px;
+    color:white;
+}
+.error_message{
+    background-color: rgba(255, 101, 101,.9);
+}
+.error_message button{
+    background-color: rgb(138, 4, 4);
+    border-radius: 50%;
+    width: 20px;
+    font-size: 15px;
+    height: 20px;
+}
+.success_message{
+    background-color: rgba(101, 255, 101,.9);
+}
+.success_message button{
+    background-color: rgb(8, 128, 4);
+    border-radius: 50%;
+    width: 20px;
+    font-size: 15px;
+    height: 20px;
+}
 .services
 {
     display: inline-flex;
-    
-    position: relative;
-    float: right;
-    top:40px;
-    
 }
 .services li
 {
-    display: inline-block;
+    display: inline;
     padding: 10px;
     font-size: 20px
-
+}
+.services li a{
+    color:black;
+    text-decoration:none;
+}
+.services li a:hover{
+    color:rgb(44, 44, 192);
+}
+.grid3{
+    grid-column:1/3;
+    width: 100%;
+    justify-self:center;
+    text-align:center;
 }
 .login
 {
     float: right;
-    padding-top: 20px;
-
 }
 .login a
 {
@@ -63,7 +100,18 @@ nav{
     border-radius: 8px;
     background-color: cornflowerblue;
     color: aliceblue;
-    
+}
+#user_image{
+    border:none;
+    position:relative;
+    top: 15px;
+    padding:0;
+    border-radius: 50%;
+    overflow:hidden;
+}
+#user_image img{
+    width: 50px;
+    height: 50px;
 }
 #name
 {
@@ -121,6 +169,10 @@ button:hover{
     left: 40%;
     bottom: 10px;
     background-color: aliceblue;
+}
+.box a{
+    color:black;
+    text-decoration:none;
 }
 .offers
 {
@@ -184,7 +236,10 @@ input[type=number]::-webkit-inner-spin-button{
     position: relative;
     bottom: 40px;
 }
-.center h1{
-    margin: 15px;
-    text-align: center
+table button{
+    border-radius: 20px;
+    width: 40px;
+    font-size: 15px;
+    height: 30px;
+    background-color:rgb(44, 44, 192);
 }
