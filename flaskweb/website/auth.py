@@ -1,16 +1,47 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
-
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from website.models import User, ClaimLoan
 from flask_login import login_required, logout_user, current_user, login_user
 import json
-
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
+import random
 
 auth = Blueprint('auth', __name__)
+
+with open(r'password.txt', 'r') as file:
+    epassword = file.readline()
+    me = file.readline()
+    epassword = epassword.rstrip()
+
+
+def send_mail(C_user):
+    you = C_user.email
+    message = MIMEMultipart()
+    message['subject'] = "MatchFinance welcomes you"
+    message['from'] = me
+    message['to'] = you
+    print(me)
+    print(you)
+    message.attach(MIMEText(f"Your account has been successfully created!\nWelcome {C_user.firstName}.\nYour account "
+                            f"number is {C_user.accountNo}\nUse it to log into your account and perform other "
+                            f"related actions.\nMatchFinance is here to support you financially."))
+    try:
+        server = smtplib.SMTP(host="smtp.gmail.com", port=587)
+        server.ehlo()
+        server.starttls()
+        server.login(me, epassword)
+        server.sendmail(me, you, message.as_string())
+        server.quit()
+        print(f'Email sent to {C_user.email}')
+        db.session.add(C_user)
+        db.session.commit()
+    except Exception as e:
+        print(f'Error in sending message: {e}')
+        flash("Error in sending message, Please try again", category="error")
+        return render_template('signup.html', user=current_user)
 
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -19,7 +50,7 @@ def login():
         acc_num = request.form.get('account_num')
         password = request.form.get('pass')
 
-        user = User.query.filter_by(ID_number=acc_num).first()
+        user = User.query.filter_by(accountNo=acc_num).first()
         if user:
             if check_password_hash(user.password, password):
                 flash('Logged in successfully!', category='success')
@@ -61,7 +92,6 @@ def admin_signup():
         password = request.form.get('password')
         password1 = request.form.get('password1')
 
-        invalid = 0
         user = User.query.filter_by(email=email.lower()).first()
         if user:
             flash('Email already exists', category='error')
@@ -84,9 +114,8 @@ def admin_signup():
                 is_admin=True,
                 password=generate_password_hash(password, method='sha256')
             )
-            db.session.add(new_user)
-            db.session.commit()
-            flash('New admin created', category='success')
+            send_mail(new_user)
+            flash('New admin created, check email for login details', category='success')
             return redirect(url_for('auth.admin'))
     return render_template('adminSignup.html', user=current_user)
 
@@ -104,6 +133,7 @@ def sign_up():
         email = request.form.get('email')
         date_of_birth = request.form.get('dob')
         ID_number = request.form.get('IDno')
+        ID_type = request.form.get('id_type')
         password = request.form.get('password')
         password1 = request.form.get('password1')
 
@@ -114,8 +144,6 @@ def sign_up():
         else:
             superuser = False
 
-        # check if account exists
-        invalid = 0
         user = User.query.filter_by(email=email.lower()).first()
         if user:
             flash('Email already exists', category='error')
@@ -133,8 +161,10 @@ def sign_up():
                 lastName=lastName.title(),
                 address=address,
                 city=city,
+                ID_type=ID_type,
                 state=state,
                 phone=phone,
+                accountNo=random.randint(1000000000, 999999999999),
                 email=email.lower(),
                 date_of_birth=date_of_birth,
                 ID_number=ID_number,
@@ -143,39 +173,10 @@ def sign_up():
                 password=generate_password_hash(password, method='sha256')
             )
             print(new_user)
-            db.session.add(new_user)
-            db.session.commit()
-            flash('Account created', category='success')
-            return redirect(url_for('auth.send-email'))
+            send_mail(new_user)
+            flash('Account created, check your email for login details', category='success')
+            return redirect(url_for("auth.login"))
     return render_template('signup.html', user=current_user)
-
-
-@auth.route('/send-email')
-@login_required
-def send_mail():
-    me = 'ansongandy04@gmail.com'
-    you = 'barry2000allen5@gmail.com'
-    password = 'avexjyhlxjkhhhwo'
-    message = MIMEMultipart()
-    message['subject'] = "Test"
-    message['from'] = me
-    message['to'] = you
-    message.attach(MIMEText("This is a test.\nDo not reply"))
-    try:
-        server = smtplib.SMTP(host="smtp.gmail.com", port=587)
-        server.ehlo()
-        server.starttls()
-        server.login(me, password)
-        server.sendmail(me, you, message.as_string())
-        server.quit()
-        print(f'Email sent to {current_user.email}')
-        flash(f'Account created, Email sent to {current_user.email}', category='success')
-        return redirect(url_for('views.home'))
-    except Exception as e:
-        flash('Account created', category='success')
-        print(f'Error in sending message: {e}')
-        flash('Account created, could not send email', category='error')
-        return redirect(url_for('views.home'))
 
 
 @auth.route('/delete-user', methods=['POST'])
