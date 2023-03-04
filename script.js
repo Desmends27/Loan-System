@@ -1,7 +1,6 @@
 const paymentMethodSelect = document.getElementById('payment-method');
 const mobileMoneyFields = document.getElementById('mobile-money-fields');
 const bankAccountFields = document.getElementById('bank-account-fields');
-
 paymentMethodSelect.addEventListener('change', () => {
   if (paymentMethodSelect.value === 'mobile-money') {
     mobileMoneyFields.style.display = 'block';
