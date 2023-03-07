@@ -3,6 +3,8 @@ from . import db
 from werkzeug.utils import secure_filename
 import uuid as uuid
 import os
+import mediapipe as mp
+import cv2 as cv
 from werkzeug.security import generate_password_hash, check_password_hash
 from website.models import User, ClaimLoan, PayLoan
 from flask_login import login_required, logout_user, current_user, login_user
@@ -122,19 +124,41 @@ def admin_signup():
         ID_number = request.form.get('IDno')
         password = request.form.get('password')
         password1 = request.form.get('password1')
+        pic = request.files['pic']
+        picname = secure_filename(pic.filename)
+        pic_name = str(uuid.uuid1()) + "_" + picname
+        pic.save(os.path.join("website/static/profiles/", pic_name))
 
         print(randNo)
+        # validate image
+        if picname.lower().endswith(('.png', '.jpg', '.jpeg', '.tiff', '.bmp', '.gif')):
+            pass
+        else:
+            flash('Please upload a picture', category='error')
+            return render_template('signup.html', user=current_user)
+        # Find face in picture
+        mpFace = mp.solutions.face_detection
+        face = mpFace.FaceDetection(min_detection_confidence=0.9)
+
+        frame = cv.imread(pic)
+        gray = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
+        results = face.process(gray)
+        if results.detections:
+            pass
+        else:
+            flash('Please upload a picture of your face', category='error')
+            return render_template('signup.html', user=current_user)
 
         user = User.query.filter_by(email=email.lower()).first()
         if user:
             flash('Email already exists', category='error')
-            return render_template('signup.html')
-        # check validity
-        # if len(password) < 7:
-        #     flash('Password too short, must be at least 7 characters', category='error')
+            return render_template('adminSignup.html', user=current_user)
+        if len(password) < 7:
+            flash('Password too short, must be at least 7 characters', category='error')
+            return render_template('adminSignup.html', user=current_user)
         if password1 != password:
             flash('Password mismatch', category='error')
-            return render_template('signup.html')
+            return render_template('adminSignup.html', user=current_user)
         else:
             new_user = User(
                 firstName=firstName.title(),
@@ -142,6 +166,7 @@ def admin_signup():
                 lastName=lastName.title(),
                 phone=phone,
                 email=email.lower(),
+                img=pic_name,
                 accountNo=randNo,
                 date_of_birth=date_of_birth,
                 ID_number=ID_number,
@@ -167,16 +192,35 @@ def sign_up():
         phone = request.form.get('phone')
         email = request.form.get('email')
         date_of_birth = request.form.get('dob')
-        pic = request.files['pic']
         ID_number = request.form.get('IDno')
         ID_type = request.form.get('id_type')
         password = request.form.get('password')
         password1 = request.form.get('password1')
+        pic = request.files['pic']
         picname = secure_filename(pic.filename)
         pic_name = str(uuid.uuid1()) + "_" + picname
         pic.save(os.path.join("website/static/profiles/", pic_name))
 
+        # validate image
+        if picname.lower().endswith(('.png', '.jpg', '.jpeg', '.tiff', '.bmp', '.gif')):
+            pass
+        else:
+            flash('Please upload a picture', category='error')
+            return render_template('signup.html', user=current_user)
+
         print(randNo)
+        # Find face in picture
+        mpFace = mp.solutions.face_detection
+        face = mpFace.FaceDetection(min_detection_confidence=0.9)
+
+        frame = cv.imread(pic)
+        gray = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
+        results = face.process(gray)
+        if results.detections:
+            pass
+        else:
+            flash('Please upload a picture of your face', category='error')
+            return render_template('signup.html', user=current_user)
 
         admin_check = User.query.all()
         print(admin_check)
@@ -193,13 +237,13 @@ def sign_up():
         user = User.query.filter_by(email=email.lower()).first()
         if user:
             flash('Email already exists', category='error')
-            return render_template('signup.html')
-        # check validity
-        # if len(password) < 7:
-        #     flash('Password too short, must be at least 7 characters', category='error')
+            return render_template('signup.html', user=current_user)
+        if len(password) < 7:
+            flash('Password too short, must be at least 7 characters', category='error')
+            return render_template('signup.html', user=current_user)
         if password1 != password:
             flash('Password mismatch', category='error')
-            return render_template('signup.html')
+            return render_template('signup.html', user=current_user)
         else:
             new_user = User(
                 firstName=firstName.title(),
