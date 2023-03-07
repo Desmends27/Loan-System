@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block head %}Admin{% endblock %}
+{% block body %}
+<nav class="navbar">
+    <div><h2 id="title"><span>Match</span>Financial</h2></div>
+    <div>
+        {% if now.is_authenticated %}
+        <ul class="login">
+        {% if now.is_admin %}
+        <li><a href="admin">Admin</a>&nbsp;</li>
+        {% endif %}
+        <li><a href="/">Home</a>&nbsp;</li>
+        <li><a href="logout">Logout</a></li>
+        {% if now.is_authenticated %}
+        <li id="user_image">
+            <img src="{{url_for('static', filename='profiles/'+now.img)}}">
+        </li>
+        {% endif %}
+        </ul>
+        {% else %}
+    <ul class="login" style="padding:15px">
+        <li><a href="signup">Sign Up</a>&nbsp;</li>
+        <li><a href="login">Login</a></li>
+    </ul>
+        {% endif %}
+    </div>
+    <div class="grid3">
+    <ul class="services">
+        {% if now.is_authenticated %}
+        <li><a href="personal_loans">Personal Loans</a></li>
+        <li><a href="business_loans">Business Loans</a></li>
+        <li><a href="student_loans">Student Loans</a></li>
+        <li><a href="pay_loan">Pay Debt</a></li>
+        {% else %}
+        <li><a href="login">Personal Loans</a></li>
+        <li><a href="login">Business Loans</a></li>
+        <li><a href="login">Student Loans</a></li>
+        <li><a href="login">Pay Debt</a></li>
+        {% endif %}
+    </ul>
+    </div>
+</nav>
+    <div class="grid_all">
+        <div class="title">SuperUser and Administators</div>
+        <div class="grid_admins">
+            <div class="row">
+                <div class="col_header">Name</div>
+                <div class="col_header">Email</div>
+                <div class="col_header">Phone Number</div>
+                <div class="col_header">Account Number</div>
+                <div class="col_header">Delete</div>
+            </div>
+            {% for user in users%}
+            {% if user.is_admin %}
+            <div class="row">
+                <div class="col_data">{{user.lastName+" "+user.firstName+" "+user.middleName}}</div>
+                <div class="col_data">{{user.email}}</div>
+                <div class="col_data">{{"0"}}{{user.phone}}</div>
+                <div class="col_data">{{user.accountNo}}</div>
+                {% if user.is_superuser %}
+                <div class="col_data">SuperUser</div>
+                {% else %}
+                <div class="col_data"><button onclick="deleteUser({{user.id}})">Delete</button></div>
+                {% endif %}
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="title">Users</div>
+        <div class="grid_users">
+            <div class="row">
+                <div class="col_header">Name</div>
+                <div class="col_header">Email</div>
+                <div class="col_header">Phone Number</div>
+                <div class="col_header">Account Number</div>
+                <div class="col_header">Delete</div>
+            </div>
+            {% for user in users%}
+            {% if user.is_admin %}
+            {% else %}
+            <div class="row">
+                <div class="col_data">{{user.lastName+" "+user.firstName+" "+user.middleName}}</div>
+                <div class="col_data">{{user.email}}</div>
+                <div class="col_data">{{"0"}}{{user.phone}}</div>
+                <div class="col_data">{{user.accountNo}}</div>
+                <div class="col_data"><button onclick="deleteUser({{user.id}})">Delete</button></div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="title">User Loans</div>
+        {% if loans %}
+        <div class="grid_loan">
+            <div class="row">
+            <div class="col_header">Firstname</div>
+            <div class="col_header">Email</div>
+            <div class="col_header">Loan Amount</div>
+            <div class="col_header">Amount to pay</div>
+            <div class="col_header">Pay By</div>
+            <div class="col_header">Time Taken</div>
+            <div class="col_header">Delete Loan</div>
+            </div>
+            {% for loan in loans%}
+            <div class="row">
+                <div class="col_data">{{loan.firstName}}</div>
+                <div class="col_data">{{loan.email}}</div>
+                <div class="col_data">{{loan.email}}</div>
+                <div class="col_data">{{loan.amount}}</div>
+                <div class="col_data">{{loan.left_to_pay}}</div>
+                <div class="col_data">{{loan.time_span}}</div>
+                <div class="col_data">{{loan.date_taken}}</div>
+                <div class="col_data"><button onclick="deleteLoan({{loan.id}})">Delete</button>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <h3>No loans</h3>
+        {% endif %}
+
+        <div class="title">Loan Payments</div>
+        {% if pays %}
+        <div class="grid_loan">
+            <div class="row">
+            <div class="col_header">Firstname</div>
+            <div class="col_header">Payment Amount</div>
+            <div class="col_header">Payment Method</div>
+            <div class="col_header">Account Number</div>
+            <div class="col_header">Date Payed</div>
+            <div class="col_header">Account for Payment</div>
+            <div class="col_header">Delete Loan</div>
+            </div>
+            {% for pay in pays%}
+            <div class="row">
+                <div class="col_data">{{pay.fname}}</div>
+                <div class="col_data">{{pay.amount}}</div>
+                <div class="col_data">{{pay.payMethod}}</div>
+                <div class="col_data">{{pay.accountNo}}</div>
+                <div class="col_data">{{pay.date_payed}}</div>
+                {% if pay.cName %}
+                <div class="col_data">{{pay.cName}}</div>
+                {% else %}
+                <div class="col_data">{{pay.bNumber}}</div>
+                {% endif %}
+                <div class="col_data"><button onclick="deletePay({{pay.id}})">Delete</button>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <h3>No payments made</h3>
+        {% endif %}
+    </div>
+
+<script type="text/javascript" src="{{ url_for('static', filename='admin.js')}}"></script>
+{% endblock %}

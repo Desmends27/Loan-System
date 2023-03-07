@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block head %}Home{% endblock %}
+
+{% block body %}
+    {% include 'navbar.html' %}
+    <div class="main">
+    <div class="hero">
+
+      {% if user.is_authenticated %}
+      <div class="div1">
+        <h2>Welcome {{user.firstName}}</h2>
+        <div class="cards_grid">
+          <div class="cardR1">
+            <h3>Account Number</h3>
+            <h4>{{user.accountNo}}</h4>
+          </div>
+          <div class="cardR1">
+            <h3>Email Address</h3>
+            <h4>{{user.email}}</h4>
+          </div>
+          <div class="cardR1">
+            <h3>Address</h3>
+            <h4>
+              {{user.address|title}}
+              <br>{{user.state|title}}
+              <br>{{user.city|title}}
+            </h4>
+          </div>
+          <div class="cardR1">
+            <h3>Id Number</h3>
+            <h4>{{user.ID_type|title}}<br>
+              {{user.ID_number|upper}}</h4>
+          </div>
+          <div class="cardR1">
+            <h3>Account Number</h3>
+            <h4>{{user.accountNo}}</h4>
+          </div>
+          <div class="cardR1">
+            <h3>Current Loans</h3>
+            <h4>{% if loan %}GHc {{loan.accountNo}}{% else %}No loan taken{% endif %}</h4>
+          </div>
+          <div class="cardR1">
+            <h3>Date taken</h3>
+            <h4>{% if loan %}GHc {{loan.date_taken}}{% else %}No loan taken{% endif %}</h4>
+          </div>
+          <div class="cardR1">
+            <h3>Date Due</h3>
+            <h4>{% if loan %}GHc {{loan.time_span}}{% else %}No loan taken{% endif %}</h4>
+          </div>
+          <div class="cardR1">
+            <h3>Amount to pay(+interest)</h3>
+            <h4>{% if loan %}GHc {{loan.to_pay}}{% else %}No loan taken{% endif %}</h4>
+          </div>
+        </div>
+      </div>
+
+      {% else %}
+      <div class="notLogged">
+      <h1>Personal Loans</h1>
+      <h5>Apply for all your financial needs</h5>
+      <button><a href="personal_loans">Apply now</a></button></div>
+      </div>
+      {% endif %}
+
+    </div>
+    <div class="offers">
+        <div>
+            <p>Loans up to 10k after major payment</p>
+            <p class="des">Become a customer</p>
+        </div>
+        <div>
+            <p>Get Business Loan Offers </p>
+            <p class="des">To become your own boss</p>
+        </div>
+        <div>
+            <p>Low rates starting at 3.84% APR</p>
+            <p class="des">No impact on your credit score</p>
+        </div>
+    </div>
+    <div class="miniform">
+        <div id="head">How much would you like to borrow?</div>
+        <form action="#" method="#">
+            <div>
+              <label for="principal">Loan Amount</label>
+              <input type="number" name="principal">
+            </div>
+            <div>
+              <label for="time">Loan Term</label>
+              <input type="number" name="time" placeholder="In months">
+            </div>
+            <div>
+              <label for="interest_rate">Interest Rate</label>
+              <input type="number" name="interest_rate" value="10" placeholder="In percent.eg 10">
+            </div>
+            <div class="ans">
+              <div><label id="increase_size" for="amount">0</label></div>
+              <div class="buton"><button type="button" onclick="calculateAmount()">Calculate interest</button></div>
+            </div>
+          </form>
+    </div>
+    <script src="{{ url_for('static', filename='script.js')}}"></script>
+{% include 'footer.html' %}
+{% endblock %}
