@@ -1,13 +1,13 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from werkzeug.security import check_password_hash
-import datetime
 from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 from website.auth import epassword, me
-import smtplib
-from website import db
 from website.models import ClaimLoan
+from email.mime.text import MIMEText
+from website import db
+import datetime
+import smtplib
 
 views = Blueprint('views', __name__)
 
@@ -25,9 +25,6 @@ def send_loan_mail(new_loan, type):
     message = MIMEMultipart()
     message['from'] = me
     message['to'] = you
-    print(you)
-    print(me)
-    print(new_loan.time_span)
     if type == "personal":
         message['subject'] = "MatchFinance Personal Loan"
     if type == "student":
@@ -46,7 +43,6 @@ def send_loan_mail(new_loan, type):
         server.login(me, epassword)
         server.sendmail(me, you, message.as_string())
         server.quit()
-        print(f'Email sent to {current_user.email}')
         db.session.add(new_loan)
         db.session.commit()
         flash('Sending loan, check email for confirmation', category='success')
@@ -54,7 +50,6 @@ def send_loan_mail(new_loan, type):
 
     except Exception as e:
         flash('Could not connect, please try again', category='error')
-        print(f'Error in sending message: {e}')
 
 
 @login_required

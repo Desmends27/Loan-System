@@ -1,18 +1,18 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
-from . import db
-from werkzeug.utils import secure_filename
-import uuid as uuid
-import os
-import mediapipe as mp
-import cv2 as cv
+from flask_login import login_required, logout_user, current_user, login_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from website.models import User, ClaimLoan, PayLoan
-from flask_login import login_required, logout_user, current_user, login_user
-import json
 from email.mime.multipart import MIMEMultipart
+from werkzeug.utils import secure_filename
 from email.mime.text import MIMEText
+import mediapipe as mp
+import uuid as uuid
+import cv2 as cv
+from . import db
 import smtplib
 import random
+import json
+import os
 
 auth = Blueprint('auth', __name__)
 
@@ -37,14 +37,12 @@ def payment_mail(C_user, C_loan, paying):
         server.login(me, epassword)
         server.sendmail(me, you, message.as_string())
         server.quit()
-        print(f'Email sent to {C_user.email}')
         C_loan.left_to_pay -= int(paying)
         db.session.commit()
         if C_loan.left_to_pay <= 0:
             db.session.delete(C_loan)
             db.session.commit()
     except Exception as e:
-        print(f'Error in sending message: {e}')
         flash("Could not process form, please try again", category="error")
         return render_template('signup.html', user=current_user)
 
@@ -65,11 +63,9 @@ def send_mail(C_user):
         server.login(me, epassword)
         server.sendmail(me, you, message.as_string())
         server.quit()
-        print(f'Email sent to {C_user.email}')
         db.session.add(C_user)
         db.session.commit()
     except Exception as e:
-        print(f'Error in sending message: {e}')
         flash("Could not process form, Please try again", category="error")
         return render_template('signup.html', user=current_user)
 
@@ -105,9 +101,8 @@ def logout():
 @login_required
 def admin():
     c = current_user
-    print(c.email)
-    print(c.is_superuser)
-    return render_template('admin.html', now=current_user, pays=PayLoan.query.all(), loans=ClaimLoan.query.all(), users=User.query.all())
+    return render_template('admin.html', now=current_user, pays=PayLoan.query.all(), loans=ClaimLoan.query.all(),
+                           users=User.query.all())
 
 
 @auth.route('/admin_signup', methods=['GET', 'POST'])
@@ -126,21 +121,17 @@ def admin_signup():
         password1 = request.form.get('password1')
         pic = request.files['pic']
         picname = secure_filename(pic.filename)
-        pic_name = str(uuid.uuid1()) + "_" + picname
-        pic.save(os.path.join("website/static/profiles/", pic_name))
+        pic_name = f'{str(uuid.uuid1())}_{email}_{picname}'
 
-        print(randNo)
-        # validate image
         if picname.lower().endswith(('.png', '.jpg', '.jpeg', '.tiff', '.bmp', '.gif')):
-            pass
+            pic.save(os.path.join("website/static/profiles/", pic_name))
         else:
             flash('Please upload a picture', category='error')
             return render_template('signup.html', user=current_user)
-        # Find face in picture
+
         mpFace = mp.solutions.face_detection
         face = mpFace.FaceDetection(min_detection_confidence=0.9)
-
-        frame = cv.imread(pic)
+        frame = cv.imread(os.path.join("website/static/profiles/", pic_name))
         gray = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
         results = face.process(gray)
         if results.detections:
@@ -174,8 +165,13 @@ def admin_signup():
                 password=generate_password_hash(password, method='sha256')
             )
             send_mail(new_user)
-            flash('New admin created, check email for login details', category='success')
-            return redirect(url_for('auth.admin'))
+            Check = User.query.filter_by(email=email.lower())
+            if Check:
+                flash('New admin created, check email for login details', category='success')
+                return redirect(url_for('auth.admin'))
+            else:
+                os.remove(os.path.join("website/static/profiles/", pic_name))
+                flash('Form could not processed please try again', category='error')
     return render_template('adminSignup.html', user=current_user)
 
 
@@ -198,22 +194,17 @@ def sign_up():
         password1 = request.form.get('password1')
         pic = request.files['pic']
         picname = secure_filename(pic.filename)
-        pic_name = str(uuid.uuid1()) + "_" + picname
-        pic.save(os.path.join("website/static/profiles/", pic_name))
+        pic_name = f'{str(uuid.uuid1())}_{email}_{picname}'
 
-        # validate image
         if picname.lower().endswith(('.png', '.jpg', '.jpeg', '.tiff', '.bmp', '.gif')):
-            pass
+            pic.save(os.path.join("website/static/profiles/", pic_name))
         else:
             flash('Please upload a picture', category='error')
             return render_template('signup.html', user=current_user)
 
-        print(randNo)
-        # Find face in picture
         mpFace = mp.solutions.face_detection
         face = mpFace.FaceDetection(min_detection_confidence=0.9)
-
-        frame = cv.imread(pic)
+        frame = cv.imread(os.path.join("website/static/profiles/", pic_name))
         gray = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
         results = face.process(gray)
         if results.detections:
@@ -223,7 +214,6 @@ def sign_up():
             return render_template('signup.html', user=current_user)
 
         admin_check = User.query.all()
-        print(admin_check)
         if not admin_check:
             superuser = True
         else:
@@ -263,10 +253,13 @@ def sign_up():
                 is_admin=superuser,
                 password=generate_password_hash(password, method='sha256')
             )
-            print(new_user)
             send_mail(new_user)
-            flash('Account created, if email is not received please signup again', category='success')
-            return redirect(url_for("auth.login"))
+            Check = User.query.filter_by(email=email.lower())
+            if Check:
+                flash('Account created, check email for your account number to login.', category='success')
+                return redirect(url_for("auth.login"))
+            os.remove(os.path.join("website/static/profiles/", pic_name))
+            flash('Form could not processed please try again', category='error')
     return render_template('signup.html', user=current_user)
 
 
