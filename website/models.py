@@ -13,10 +13,12 @@ class PayLoan(db.Model):
     cNumber = db.Column(db.Integer)
     cName = db.Column(db.String(50))
     bNumber = db.Column(db.String(50))
+    pay_id = db.Column(db.Integer, db.ForeignKey('claimloan.id'))
 
 
 class ClaimLoan(db.Model):
     name = db.Column(db.String(50))
+    pay = db.relationship('PayLoan', cascade='all,delete-orphan')
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))

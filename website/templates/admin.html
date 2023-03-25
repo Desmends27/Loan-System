@@ -56,7 +56,7 @@
             <div class="row">
                 <div class="col_data">{{user.lastName+" "+user.firstName+" "+user.middleName}}</div>
                 <div class="col_data">{{user.email}}</div>
-                <div class="col_data">{{"0"}}{{user.phone}}</div>
+                <div class="col_data">0{{user.phone}}</div>
                 <div class="col_data">{{user.accountNo}}</div>
                 {% if user.is_superuser %}
                 <div class="col_data">SuperUser</div>
@@ -82,7 +82,7 @@
             <div class="row">
                 <div class="col_data">{{user.lastName+" "+user.firstName+" "+user.middleName}}</div>
                 <div class="col_data">{{user.email}}</div>
-                <div class="col_data">{{"0"}}{{user.phone}}</div>
+                <div class="col_data">0{{user.phone}}</div>
                 <div class="col_data">{{user.accountNo}}</div>
                 <div class="col_data"><button onclick="deleteUser({{user.id}})">Delete</button></div>
             </div>
