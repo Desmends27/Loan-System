@@ -16,7 +16,7 @@ views = Blueprint('views', __name__)
 def home():
     if not current_user.is_anonymous:
         loan = ClaimLoan.query.filter_by(user_id=current_user.id).first()
-        return render_template('index.html', user=current_user,loan=loan)
+        return render_template('index.html', user=current_user, loan=loan)
     return render_template('index.html', user=current_user)
 
 
@@ -32,7 +32,7 @@ def send_loan_mail(new_loan, type):
     if type == "business":
         message['subject'] = "MatchFinance Business Loan"
     message.attach(MIMEText(f"Dear, {current_user.firstName}"
-                            f"\nYou have been credited a loan of GHc{new_loan.amount}"
+                            f"\nYou have been credited a loan of GHc{new_loan.amount_taken}"
                             f"\nYou would pay an amount GHc{new_loan.left_to_pay}"
                             f"\nThis loan is to be payed by {new_loan.time_span}"
                             f"\nThank you for banking with us."))
@@ -43,8 +43,6 @@ def send_loan_mail(new_loan, type):
         server.login(me, epassword)
         server.sendmail(me, you, message.as_string())
         server.quit()
-        db.session.add(new_loan)
-        db.session.commit()
         flash('Sending loan, check email for confirmation', category='success')
         return redirect(url_for("views.home"))
 
@@ -55,48 +53,30 @@ def send_loan_mail(new_loan, type):
 @login_required
 def loan_creation(loan_type):
     if request.method == 'POST':
-        # firstname/firstname/businessname
-        firstname = request.form.get('firstname')
-        # middlename/universityname/none for business
-        middlename = request.form.get('middlename')
-        # lastname/lastname/businessType
-        lastname = request.form.get('lastname')
-        phone = request.form.get('phone')
+        name = request.form.get('name')
         email = request.form.get('email')
         purpose = request.form.get('loanpurpose')
         amount = request.form.get('loanamount')
-        collate = request.form.get('collateral')
+        guarantor = request.form.get('collateral')
         duration = request.form.get('duration')
-        password = request.form.get('password')
-        if (firstname.title() != current_user.firstName.title()) and (phone != current_user.phone) and (
-                email.lower() != current_user.email.lower()) and not (
-                check_password_hash(current_user.password, password)):
-            flash('Given data given does not match current account credentials', category='error')
-            if type == "personal":
-                return render_template('personal_loans.html', user=current_user)
-            if type == "student":
-                return render_template('student_loans.html', user=current_user)
-            if type == "business":
-                return render_template('business_loans.html', user=current_user)
-        else:
-            rate = 0.1
-            period = datetime.timedelta(int(duration) * 31)
-            now = datetime.date.today()
-            span = now + period
-            new_loan = ClaimLoan(
-                firstName = firstname,
-                middleName = middlename,
-                lastName = lastname,
-                email=email.lower(),
-                user_id=current_user.id,
-                amount=amount,
-                time_span=span,
-                purpose=purpose,
-                left_to_pay= float(amount) + (rate * float(amount) * float(duration)),
-                collateral=collate
-            )
-            send_loan_mail(new_loan, type=loan_type)
-            return redirect(url_for("views.home"))
+        rate = 0.1
+        period = datetime.timedelta(int(duration) * 31)
+        now = datetime.date.today()
+        span = now + period
+        new_loan = ClaimLoan(
+            name = name,
+            email=current_user.email,
+            user_id=current_user.id,
+            amount_taken=amount,
+            time_span=span,
+            purpose=purpose,
+            left_to_pay=float(amount) + (rate * float(amount) * float(duration)),
+            collateral=guarantor
+        )
+        send_loan_mail(new_loan, type=loan_type)
+        db.session.add(new_loan)
+        db.session.commit()
+        return redirect(url_for("views.home"))
 
 
 @views.route('/personal_loans', methods=['GET', 'POST'])
@@ -104,7 +84,7 @@ def loan_creation(loan_type):
 def personal_loans():
     loan = ClaimLoan.query.filter_by(user_id=current_user.id).first()
     if loan:
-        userloan = loan.amount
+        userloan = loan.amount_taken
         return render_template('personal_loans.html', userloan=userloan, user=current_user)
     loan_creation("personal")
     return render_template('personal_loans.html', user=current_user)
@@ -115,7 +95,7 @@ def personal_loans():
 def business_loans():
     loan = ClaimLoan.query.filter_by(user_id=current_user.id).first()
     if loan:
-        userloan = loan.amount
+        userloan = loan.amount_taken
         return render_template('business_loans.html', userloan=userloan, user=current_user)
     loan_creation("business")
     return render_template('business_loans.html', user=current_user)
@@ -126,7 +106,7 @@ def business_loans():
 def student_loans():
     loan = ClaimLoan.query.filter_by(user_id=current_user.id).first()
     if loan:
-        userloan = loan.amount
+        userloan = loan.amount_taken
         return render_template('student_loans.html', userloan=userloan, user=current_user)
     loan_creation('student')
     return render_template('student_loans.html', user=current_user)

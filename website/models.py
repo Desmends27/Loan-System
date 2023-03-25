@@ -16,18 +16,17 @@ class PayLoan(db.Model):
 
 
 class ClaimLoan(db.Model):
-    firstName = db.Column(db.String(50))
-    middleName = db.Column(db.String(50))
-    lastName = db.Column(db.String(50))
+    name = db.Column(db.String(50))
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     amount_taken = db.Column(db.Integer, nullable=False)
-    to_pay = db.Column(db.Integer, nullable=False)
-    left_to_pay = db.Column(db.Integer, default=to_pay)
+    to_pay = db.Column(db.Integer, default=0)
+    left_to_pay = db.Column(db.Integer)
     date_taken = db.Column(db.Date, default=datetime.date.today())
     time_span = db.Column(db.Date, nullable=False)
     purpose = db.Column(db.String(200), nullable=False)
+    sent = db.Column(db.String, default="False")
     collateral = db.Column(db.String(200), nullable=False)
 
 

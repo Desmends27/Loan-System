@@ -93,24 +93,33 @@
         {% if loans %}
         <div class="grid_loan">
             <div class="row">
-            <div class="col_header">Firstname</div>
+            <div class="col_header">Name</div>
             <div class="col_header">Email</div>
             <div class="col_header">Loan Amount</div>
             <div class="col_header">Amount to pay</div>
             <div class="col_header">Pay By</div>
             <div class="col_header">Time Taken</div>
+            <div class="col_header">Loan Sent</div>
             <div class="col_header">Delete Loan</div>
             </div>
             {% for loan in loans%}
             <div class="row">
-                <div class="col_data">{{loan.firstName}}</div>
+                {%if loan.name%}
+                <div class="col_data">{{loan.name}}</div>
+                {% else %}
+                <div class="col_data">{{users[loan.user_id - 1].firstName}}</div>
+                {% endif %}
                 <div class="col_data">{{loan.email}}</div>
-                <div class="col_data">{{loan.email}}</div>
-                <div class="col_data">{{loan.amount}}</div>
+                <div class="col_data">{{loan.amount_taken}}</div>
                 <div class="col_data">{{loan.left_to_pay}}</div>
                 <div class="col_data">{{loan.time_span}}</div>
                 <div class="col_data">{{loan.date_taken}}</div>
-                <div class="col_data"><button onclick="deleteLoan({{loan.id}})">Delete</button>
+                {% if loan.sent == "False" %}
+                <div class="col_data" style="background-color:red;color:white;"><button onclick="approveSend({{loan.id}})">Send</button></div>
+                {% else %}
+                <div class="col_data">Sent</div>
+                {% endif %}
+                <div class="col_data"><button onclick="deleteLoan({{loan.id}})">Delete</button></div>
             </div>
             {% endfor %}
         </div>
@@ -142,10 +151,9 @@
                 {% else %}
                 <div class="col_data">{{pay.bNumber}}</div>
                 {% endif %}
-                <div class="col_data"><button onclick="deletePay({{pay.id}})">Delete</button>
+                <div class="col_data"><button onclick="deletePay({{pay.id}})">Delete</button></div>
             </div>
             {% endfor %}
-        </div>
         {% else %}
         <h3>No payments made</h3>
         {% endif %}
