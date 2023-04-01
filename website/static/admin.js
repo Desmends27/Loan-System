@@ -15,10 +15,19 @@ function deleteLoan(loanid){
         window.location.href = "/admin";
     })
 }
-function deleteLPay(payid){
+function deletePay(payid){
     fetch("/delete-pay",{
         method:"POST",
         body:JSON.stringify({payid: payid}),
+    }).then((_res) => {
+        window.location.href = "/admin";
+    })
+}
+
+function approveSend(loanid){
+    fetch("/send-loan",{
+        method:"POST",
+        body:JSON.stringify({loanid: loanid}),
     }).then((_res) => {
         window.location.href = "/admin";
     })

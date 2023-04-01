@@ -123,7 +123,7 @@ def admin_signup():
         picname = secure_filename(pic.filename)
         pic_name = f'{str(uuid.uuid1())}_{email}_{picname}'
 
-        if picname.lower().endswith(('.png', '.jpg', '.jpeg', '.tiff', '.bmp', '.gif')):
+        if picname.lower().endswith(('.png', '.jpg', '.jpeg', '.tiff', '.bmp', '.gif', '.jfif')):
             pic.save(os.path.join("website/static/profiles/", pic_name))
         else:
             flash('Please upload a picture', category='error')
@@ -165,13 +165,18 @@ def admin_signup():
                 password=generate_password_hash(password, method='sha256')
             )
             send_mail(new_user)
-            Check = User.query.filter_by(email=email.lower())
-            if Check:
+            Check = User.query.filter_by(email=email.lower()).first()
+
+            if Check is None:
+                os.remove(os.path.join("website/static/profiles/", pic_name))
+                flash('Form could not be processed please try again', category='error')
+                return render_template('adminSignup.html', user=current_user)
+            if Check.email == email.lower():
                 flash('New admin created, check email for login details', category='success')
                 return redirect(url_for('auth.admin'))
             else:
                 os.remove(os.path.join("website/static/profiles/", pic_name))
-                flash('Form could not processed please try again', category='error')
+                flash('Form could not be processed please try again', category='error')
     return render_template('adminSignup.html', user=current_user)
 
 
@@ -196,7 +201,7 @@ def sign_up():
         picname = secure_filename(pic.filename)
         pic_name = f'{str(uuid.uuid1())}_{email}_{picname}'
 
-        if picname.lower().endswith(('.png', '.jpg', '.jpeg', '.tiff', '.bmp', '.gif')):
+        if picname.lower().endswith(('.png', '.jpg', '.jpeg', '.tiff', '.bmp', '.gif', '.jfif')):
             pic.save(os.path.join("website/static/profiles/", pic_name))
         else:
             flash('Please upload a picture', category='error')
@@ -254,12 +259,16 @@ def sign_up():
                 password=generate_password_hash(password, method='sha256')
             )
             send_mail(new_user)
-            Check = User.query.filter_by(email=email.lower())
-            if Check:
+            Check = User.query.filter_by(email=email.lower()).first()
+            if Check is None:
+                os.remove(os.path.join("website/static/profiles/", pic_name))
+                flash('Form could not be processed please try again', category='error')
+                return render_template('signup.html', user=current_user)
+            if Check.email == email.lower():
                 flash('Account created, check email for your account number to login.', category='success')
                 return redirect(url_for("auth.login"))
             os.remove(os.path.join("website/static/profiles/", pic_name))
-            flash('Form could not processed please try again', category='error')
+            flash('Form could not be processed please try again', category='error')
     return render_template('signup.html', user=current_user)
 
 
@@ -287,11 +296,23 @@ def delete_loan():
     return jsonify({})
 
 
+@auth.route('/send-loan', methods=['POST'])
+def send_loan():
+    loan = json.loads(request.data)
+    loanid = loan['loanid']
+    loan = ClaimLoan.query.get(loanid)
+    if loan:
+        if current_user.is_admin:
+            loan.sent = "True"
+            db.session.commit()
+    return jsonify({})
+
+
 @auth.route('/delete-pay', methods=['POST'])
 def delete_pay():
     pay = json.loads(request.data)
     payid = pay['payid']
-    pay = ClaimLoan.query.get(payid)
+    pay = PayLoan.query.get(payid)
     if pay:
         if current_user.is_admin:
             db.session.delete(pay)
@@ -318,9 +339,10 @@ def pay_loan():
         if not claimloan:
             flash('Not in dept', category='error')
             return render_template('pay_loan.html', user=current_user)
-        if claimloan.left_to_pay < paying:
+        if claimloan.left_to_pay < int(paying):
             flash('Payment amount exceeded current dept', category='error')
-            return render_template('pay_loan.html', user=current_user)
+            return render_template(6)
+        claimloan.left_to_pay -= int(paying)
         if (mNumber and mName) or (mNumber or bNumber):
             payment_mail(user, claimloan, paying)
             payloan = PayLoan(

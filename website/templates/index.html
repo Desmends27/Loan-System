@@ -38,15 +38,15 @@
           </div>
           <div class="cardR1">
             <h3>Current Loans</h3>
-            <h4>{% if loan %}GHc {{loan.accountNo}}{% else %}No loan taken{% endif %}</h4>
+            <h4>{% if loan %}{{loan.accountNo}}{% else %}No loan taken{% endif %}</h4>
           </div>
           <div class="cardR1">
             <h3>Date taken</h3>
-            <h4>{% if loan %}GHc {{loan.date_taken}}{% else %}No loan taken{% endif %}</h4>
+            <h4>{% if loan %}{{loan.date_taken}}{% else %}No loan taken{% endif %}</h4>
           </div>
           <div class="cardR1">
             <h3>Date Due</h3>
-            <h4>{% if loan %}GHc {{loan.time_span}}{% else %}No loan taken{% endif %}</h4>
+            <h4>{% if loan %}{{loan.time_span}}{% else %}No loan taken{% endif %}</h4>
           </div>
           <div class="cardR1">
             <h3>Amount to pay(+interest)</h3>
