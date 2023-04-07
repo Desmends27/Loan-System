@@ -30,6 +30,8 @@ color:blue;
     display: inline;
     font-size: 18px;
 }
+
+
 .error_message, .success_message{
     position:absolute;
     width:100vw;
@@ -60,6 +62,8 @@ color:blue;
     font-size: 15px;
     height: 20px;
 }
+
+
 .services
 {
     display: inline-flex;

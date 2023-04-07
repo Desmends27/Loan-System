@@ -36,14 +36,15 @@
 
     {% block body %}{% endblock %}
     <script>
-      const button1 = document.getElementById("success");
-      button1.addEventListener("click", ()=>{
-        document.getElementsByClassName("success_message")[0].style.display = 'none';
-      })
-
       const button2 = document.getElementById("error");
       button2.addEventListener("click", ()=>{
         document.getElementsByClassName("error_message")[0].style.display = 'none';
+      })
+    </script>
+    <script>
+      const button1 = document.getElementById("success");
+      button1.addEventListener("click", ()=>{
+        document.getElementsByClassName("success_message")[0].style.display = 'none';
       })
     </script>
 </body>
