@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+
+	{% block meta %}
+	<meta name="description" content="Learn about debt consolidation and how it can help you manage your finances.">
+	<meta name="keywords" content="debt consolidation, finances, loans, credit score">
+	{% endblock %}
+{% block head %}Pay Loan{% endblock %}
+
+{% block body %}
+    {% include 'navbar.html' %}
+	<div class="center">
+		<h1><span>Payment </span>form</h1>
+		<div class="form">
+			<form method="POST">
+				<input type="text" id="acc_no" name="acc_no" placeholder="Account Number" required>
+				<input type="text" id="fname" name="fname" placeholder="First Name" required>
+				<input type="number" id="pay" name="pay" placeholder="Amount to be paid" required>
+				<label for="payment-method"></label>
+				<select id="payment-method" name="payment-method">
+					<option value="Select a payment method:">Select a payment method:</option>
+					<option value="mobile-money">Mobile Money</option>
+					<option value="bank-account">Bank Account</option>
+				</select>
+				<div id="mobile-money-fields">
+					<input type="text" id="mobile_number" name="mobile_number" placeholder="Customer mobile money number">
+					<input type="text" id="mobile_name" name="mobile_name" placeholder="Customer mobile Money Name">
+					<input type="text" id="Bmobile_number" name="Bmobile_number" Value="Bank Mobile Money Number: 02020399202" readonly>
+					<input type="text" id="Bmobile_name" name="Bmobile_name" value="Bank Mobile Money Name: Savings and Loans"readonly>
+				</div>
+				  <div id="bank-account-fields">
+					<input type="text" id="bank_name" name="bank_name" placeholder="Bank account number">
+				  </div>
+				  <button type="submit">Submit</button>
+			</form>
+		</div>
+	</div>
+</body>
+<script src="{{ url_for('static', filename='script.js')}}"></script>
+{% endblock %}

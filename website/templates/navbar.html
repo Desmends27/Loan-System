@@ -1,0 +1,39 @@
+<nav class="navbar">
+    <div><h2 id="title"><span>Micro</span>Finance</h2></div>
+    <div>
+        {% if user.is_authenticated %}
+        <ul class="login">
+        {% if user.is_admin %}
+        <li><a href="admin">Admin</a>&nbsp;</li>
+        {% endif %}
+        <li><a href="/">Home</a>&nbsp;</li>
+        <li><a href="logout">Logout</a></li>
+        {% if user.is_authenticated %}
+        <li id="user_image">
+            <img src="{{url_for('static', filename='profiles/'+user.img)}}">
+        </li>
+        {% endif %}
+        </ul>
+        {% else %}
+    <ul class="login" style="padding:15px">
+        <li><a href="signup">Sign Up</a>&nbsp;</li>
+        <li><a href="login">Login</a></li>
+    </ul>
+        {% endif %}
+    </div>
+    <div class="grid3">
+    <ul class="services">
+        {% if user.is_authenticated %}
+        <li><a href="personal_loans">Personal Loans</a></li>
+        <li><a href="business_loans">Business Loans</a></li>
+        <li><a href="student_loans">Student Loans</a></li>
+        <li><a href="pay_loan">Pay Debt</a></li>
+        {% else %}
+        <li><a href="login">Personal Loans</a></li>
+        <li><a href="login">Business Loans</a></li>
+        <li><a href="login">Student Loans</a></li>
+        <li><a href="login">Pay Debt</a></li>
+        {% endif %}
+    </ul>
+    </div>
+</nav>

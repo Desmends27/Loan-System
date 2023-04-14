@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block head %}Student Loans{% endblock %}
+
+{% block body %}
+    {% include 'navbar.html' %}
+    <div class="center">
+        <h1>Student Loan Application Form</h1>
+        <div class="form" id="wide">
+            {% if user.loans %}
+            <div class="sorry">
+                <h1>Sorry, you have to repay your previous loans</h1>
+                <h2>Amount Left: {{userloan}}</h2>
+            </div>
+            {% else %}
+            <form method="POST">
+                <div class="form-group">
+                    <label for="name">Name of University:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="loanpurpose">Loan Purpose:</label>
+                    <input type="text" id="loanpurpose" name="loanpurpose" required></input>
+                </div>
+                <div class="form-group">
+                    <label for="loanamount">Loan Amount (in Ghana Cedis):</label>
+                    <input type="number" id="loanamount" name="loanamount" min="2000" step="1000" required>
+                </div>
+                <div class="form-group">
+                    <label for="collateral">Guarantor's name:</label>
+                    <input type="text" id="collateral" name="collateral" required></input>
+                </div>
+                <div class="form-group">
+                    <label for="duration">Loan Duration (in months):</label>
+                    <input type="number" id="duration" name="duration" min="6" max="48" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Submit Application</button>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
