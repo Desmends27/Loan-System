@@ -194,17 +194,6 @@ def sign_up():
             flash('Please upload a picture', category='error')
             return render_template('signup.html', user=current_user)
 
-        mpFace = mp.solutions.face_detection
-        face = mpFace.FaceDetection(min_detection_confidence=0.9)
-        frame = cv.imread(os.path.join("website/static/profiles/", pic_name))
-        gray = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
-        results = face.process(gray)
-        if results.detections:
-            pass
-        else:
-            flash('Please upload a picture of your face', category='error')
-            return render_template('signup.html', user=current_user)
-
         admin_check = User.query.all()
         if not admin_check:
             superuser = True

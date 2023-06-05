@@ -25,8 +25,6 @@ class User(db.Model, UserMixin):
 
 
 class ClaimLoan(db.Model):
-    name = db.Column(db.String(50))
-    pay = db.relationship('PayLoan', cascade='all,delete-orphan')
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -38,6 +36,7 @@ class ClaimLoan(db.Model):
     purpose = db.Column(db.String(200), nullable=False)
     sent = db.Column(db.String, default="False")
     collateral = db.Column(db.String(200), nullable=False)
+    pay = db.relationship('PayLoan', cascade='all,delete-orphan')
 
 
 class PayLoan(db.Model):
@@ -50,4 +49,4 @@ class PayLoan(db.Model):
     cNumber = db.Column(db.Integer)
     cName = db.Column(db.String(50))
     bNumber = db.Column(db.String(50))
-    pay_id = db.Column(db.Integer, db.ForeignKey('claimloan.id'))
+    pay_id = db.Column(db.Integer, db.ForeignKey('claim_loan.id'))
